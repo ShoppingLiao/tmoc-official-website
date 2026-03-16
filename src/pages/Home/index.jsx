@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import logoImg from '../../assets/images/logo.jpg';
+import logoImg from '../../assets/images/logo.webp';
 import lineQr from '../../assets/images/line-qrcode.png';
 import styles from './Home.module.css';
 

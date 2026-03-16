@@ -1,3 +1,15 @@
+/**
+ * 如何為品項加上產品照片：
+ * 在任何 item 物件中加入 image 欄位，填入 Cloudinary URL 即可
+ * 建議格式（自動 WebP + 壓縮 + 縮放）：
+ *   https://res.cloudinary.com/<your-cloud>/image/upload/f_auto,q_auto,w_1200/tmoc/products/<filename>
+ *
+ * 範例：
+ *   { name: 'J&J 避震器', price: '28,000', image: 'https://res.cloudinary.com/...' }
+ *
+ * 有 image 的品項在價目表中會顯示相機圖示，點擊可放大預覽。
+ */
+
 // ===== 套餐 =====
 export const PACKAGES = [
   {

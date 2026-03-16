@@ -1,8 +1,8 @@
 import { useState, useRef, useEffect } from 'react';
 import { PACKAGES, SERVICE_CATEGORIES } from '../../constants/pricing';
-import pkgPower   from '../../assets/images/package-power.png';
-import pkgMicro   from '../../assets/images/package-micro.png';
-import pkgChassis from '../../assets/images/package-chassis.png';
+import pkgPower   from '../../assets/images/package-power.webp';
+import pkgMicro   from '../../assets/images/package-micro.webp';
+import pkgChassis from '../../assets/images/package-chassis.webp';
 import styles from './Pricing.module.css';
 
 const PKG_DATA = [
@@ -26,20 +26,18 @@ function Lightbox({ src, alt, onClose }) {
   return (
     <div className={styles.lightbox} onClick={onClose}>
       <button className={styles.lightboxClose} onClick={onClose} aria-label="關閉">&#x2715;</button>
-      <img
-        src={src}
-        alt={alt}
-        className={styles.lightboxImg}
-        onClick={(e) => e.stopPropagation()}
-      />
+      <div className={styles.lightboxInner} onClick={(e) => e.stopPropagation()}>
+        <img src={src} alt={alt} className={styles.lightboxImg} />
+        <p className={styles.lightboxCaption}>{alt}</p>
+      </div>
     </div>
   );
 }
 
 // ── Package Swiper ────────────────────────────────────
 function PackageSwiper() {
-  const [current, setCurrent]     = useState(0);
-  const [lightbox, setLightbox]   = useState(null);
+  const [current, setCurrent]   = useState(0);
+  const [lightbox, setLightbox] = useState(null);
   const trackRef = useRef(null);
 
   const goTo = (index) => {
@@ -51,8 +49,7 @@ function PackageSwiper() {
 
   const prev = () => goTo((current - 1 + PKG_DATA.length) % PKG_DATA.length);
   const next = () => goTo((current + 1) % PKG_DATA.length);
-
-  const pkg = PKG_DATA[current];
+  const pkg  = PKG_DATA[current];
 
   return (
     <>
@@ -65,8 +62,7 @@ function PackageSwiper() {
           {PKG_DATA.map((item, i) => (
             <div key={i} className={styles.swiperSlide}>
               <img
-                src={item.src}
-                alt={item.title}
+                src={item.src} alt={item.title}
                 className={styles.swiperImg}
                 onClick={() => setLightbox({ src: item.src, alt: item.title })}
                 title="點擊放大"
@@ -74,30 +70,24 @@ function PackageSwiper() {
             </div>
           ))}
         </div>
-
         <button className={`${styles.swiperArrow} ${styles.swiperPrev}`} onClick={prev} aria-label="上一張">&#8249;</button>
         <button className={`${styles.swiperArrow} ${styles.swiperNext}`} onClick={next} aria-label="下一張">&#8250;</button>
-
         <div className={styles.swiperDots}>
           {PKG_DATA.map((_, i) => (
-            <button
-              key={i}
+            <button key={i}
               className={`${styles.dot} ${i === current ? styles.dotActive : ''}`}
-              onClick={() => goTo(i)}
-              aria-label={`第 ${i + 1} 張`}
+              onClick={() => goTo(i)} aria-label={`第 ${i + 1} 張`}
             />
           ))}
         </div>
       </div>
 
-      {/* 文字說明（跟著 current 變動） */}
+      {/* 套餐文字說明 */}
       <div className={styles.pkgDetail}>
         <div className={styles.pkgDetailHeader}>
           {pkg.subtitle && <p className={styles.pkgSubtitle}>{pkg.subtitle}</p>}
           <h3 className={styles.pkgTitle}>{pkg.title}</h3>
         </div>
-
-        {/* 單品清單 */}
         <ul className={styles.pkgItems}>
           {pkg.items.map(item => (
             <li key={item.no} className={styles.pkgItem}>
@@ -107,10 +97,7 @@ function PackageSwiper() {
             </li>
           ))}
         </ul>
-
         <div className={styles.pkgDivider} />
-
-        {/* 組合價 */}
         <div className={styles.combos}>
           {pkg.combos.map(combo => (
             <div key={combo.label} className={styles.combo}>
@@ -121,8 +108,6 @@ function PackageSwiper() {
             </div>
           ))}
         </div>
-
-        {/* 備註 */}
         {pkg.notes.length > 0 && (
           <div className={styles.pkgNotes}>
             {pkg.notes.map(note => (
@@ -140,43 +125,56 @@ function PackageSwiper() {
 
 // ── ServiceTable ──────────────────────────────────────
 function ServiceTable({ category }) {
+  const [lightbox, setLightbox] = useState(null);
+
   return (
-    <div className={styles.serviceCard} id={category.id}>
-      <h3 className={styles.serviceTitle}>{category.title}</h3>
-      <div className={styles.tableWrapper}>
-        <table className={styles.table}>
-          <thead>
-            <tr>
-              <th>項目</th>
-              <th>價格（NTD）</th>
-              <th>備註</th>
-            </tr>
-          </thead>
-          <tbody>
-            {category.items.map((item, i) => (
-              <tr key={i}>
-                <td>{item.name}</td>
-                <td className={styles.priceCell}>{item.price}</td>
-                <td className={styles.noteCell}>{item.note || '—'}</td>
+    <>
+      {lightbox && (
+        <Lightbox src={lightbox.src} alt={lightbox.alt} onClose={() => setLightbox(null)} />
+      )}
+      <div className={styles.serviceCard} id={category.id}>
+        <h3 className={styles.serviceTitle}>{category.title}</h3>
+        <div className={styles.tableWrapper}>
+          <table className={styles.table}>
+            <thead>
+              <tr>
+                <th>項目</th>
+                <th>價格（NTD）</th>
+                <th>備註</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {category.items.map((item, i) => (
+                <tr
+                  key={i}
+                  className={item.image ? styles.rowClickable : ''}
+                  onClick={item.image ? () => setLightbox({ src: item.image, alt: item.name }) : undefined}
+                  title={item.image ? '點擊查看產品照片' : undefined}
+                >
+                  <td>
+                    {item.name}
+                    {item.image && <span className={styles.cameraIcon}>&#128247;</span>}
+                  </td>
+                  <td className={styles.priceCell}>{item.price}</td>
+                  <td className={styles.noteCell}>{item.note || '—'}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
-    </div>
+    </>
   );
 }
 
 // ── Go To Top ─────────────────────────────────────────
 function GoToTop() {
   const [visible, setVisible] = useState(false);
-
   useEffect(() => {
     const onScroll = () => setVisible(window.scrollY > 400);
     window.addEventListener('scroll', onScroll);
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
-
   return (
     <button
       className={`${styles.goTop} ${visible ? styles.goTopVisible : ''}`}
@@ -205,16 +203,10 @@ export default function Pricing() {
 
       <div className={styles.tabs}>
         <div className={styles.tabContainer}>
-          <button
-            className={`${styles.tab} ${activeTab === 'all' ? styles.tabActive : ''}`}
-            onClick={() => setActiveTab('all')}
-          >
+          <button className={`${styles.tab} ${activeTab === 'all' ? styles.tabActive : ''}`} onClick={() => setActiveTab('all')}>
             完整項目表
           </button>
-          <button
-            className={`${styles.tab} ${activeTab === 'packages' ? styles.tabActive : ''}`}
-            onClick={() => setActiveTab('packages')}
-          >
+          <button className={`${styles.tab} ${activeTab === 'packages' ? styles.tabActive : ''}`} onClick={() => setActiveTab('packages')}>
             優惠套餐
           </button>
         </div>
@@ -225,13 +217,12 @@ export default function Pricing() {
           <div className={styles.container}>
             <div className={styles.catNav}>
               {SERVICE_CATEGORIES.map(cat => (
-                <a key={cat.id} href={`#${cat.id}`} className={styles.catNavItem}>
-                  {cat.title}
-                </a>
+                <a key={cat.id} href={`#${cat.id}`} className={styles.catNavItem}>{cat.title}</a>
               ))}
             </div>
             <p className={styles.sectionNote}>
-              所有價格以實際施作為準，客製化需求請透過官方 LINE 詢價。
+              所有價格以實際施作為準，客製化需求請透過官方 LINE 詢價。有
+              <span className={styles.cameraHint}>&#128247;</span>圖示的品項可點擊查看產品照片。
             </p>
             <div className={styles.serviceList}>
               {SERVICE_CATEGORIES.map(cat => (
@@ -243,9 +234,7 @@ export default function Pricing() {
 
         {activeTab === 'packages' && (
           <div className={styles.pkgSection}>
-            <p className={styles.pkgNote}>
-              以下套餐為組合優惠價，可依需求選擇單品或搭配組合。
-            </p>
+            <p className={styles.pkgNote}>以下套餐為組合優惠價，可依需求選擇單品或搭配組合。</p>
             <PackageSwiper />
           </div>
         )}

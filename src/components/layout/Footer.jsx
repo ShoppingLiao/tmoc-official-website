@@ -1,5 +1,5 @@
 import lineQr from '../../assets/images/line-qrcode.png';
-import logoImg from '../../assets/images/logo.jpg';
+import logoImg from '../../assets/images/logo.webp';
 import styles from './Footer.module.css';
 
 export default function Footer() {

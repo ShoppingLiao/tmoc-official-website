@@ -322,6 +322,34 @@
   min-width: 120px;
 }
 
+.rowClickable {
+  cursor: pointer;
+}
+
+.rowClickable:hover {
+  background: rgba(242, 193, 15, 0.08) !important;
+}
+
+.rowClickable:hover td:first-child {
+  color: var(--color-yellow);
+}
+
+.cameraIcon {
+  margin-left: 6px;
+  font-size: 0.8rem;
+  opacity: 0.5;
+  vertical-align: middle;
+}
+
+.rowClickable:hover .cameraIcon {
+  opacity: 1;
+}
+
+.cameraHint {
+  margin: 0 4px;
+  font-size: 0.9rem;
+}
+
 /* ===== Bottom CTA ===== */
 .cta {
   background: #0a0a0a;
@@ -523,6 +551,20 @@
   object-fit: contain;
   cursor: default;
   box-shadow: 0 0 80px rgba(0,0,0,0.8);
+}
+
+.lightboxInner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  cursor: default;
+}
+
+.lightboxCaption {
+  font-size: 0.85rem;
+  color: rgba(255,255,255,0.6);
+  letter-spacing: 0.05em;
 }
 
 .lightboxClose {
