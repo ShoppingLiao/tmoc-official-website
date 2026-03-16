@@ -135,8 +135,8 @@ export default function Home() {
     <>
       <Hero />
       <About />
-      <Events />
-      <Gallery />
+      {/* <Events />  施工中，暫時隱藏 */}
+      {/* <Gallery /> 施工中，暫時隱藏 */}
       <Contact />
     </>
   );
