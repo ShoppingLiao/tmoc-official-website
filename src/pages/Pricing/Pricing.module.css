@@ -361,6 +361,229 @@
   transform: translateY(-2px);
 }
 
+/* ===== Package Detail (below swiper) ===== */
+.pkgDetail {
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-top: 3px solid var(--color-yellow);
+  margin-top: 24px;
+}
+
+.pkgDetailHeader {
+  padding: 20px 24px 16px;
+  background: #161616;
+}
+
+.pkgSubtitle {
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
+  color: var(--color-yellow);
+  margin-bottom: 4px;
+}
+
+.pkgTitle {
+  font-family: var(--font-heading);
+  font-size: 1.4rem;
+  font-weight: 900;
+  color: var(--color-text);
+  letter-spacing: 0.02em;
+}
+
+.pkgItems {
+  padding: 20px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.pkgItem {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.9rem;
+}
+
+.pkgItemNo {
+  color: var(--color-yellow);
+  font-weight: 700;
+  min-width: 20px;
+}
+
+.pkgItemName {
+  flex: 1;
+  color: var(--color-text-muted);
+}
+
+.pkgItemPrice {
+  color: var(--color-text);
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.pkgDivider {
+  height: 1px;
+  background: var(--color-border);
+  margin: 0 24px;
+}
+
+.combos {
+  padding: 16px 24px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.combo {
+  display: grid;
+  grid-template-columns: 24px 1fr auto auto;
+  gap: 10px;
+  align-items: center;
+  padding: 8px 12px;
+  background: #161616;
+  border-radius: var(--radius);
+  transition: background var(--transition);
+}
+
+.combo:hover { background: #1e1e1e; }
+
+.comboLabel {
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  font-weight: 900;
+  color: var(--color-yellow);
+}
+
+.comboDesc {
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+}
+
+.comboPrice {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--color-text);
+  white-space: nowrap;
+}
+
+.comboSave {
+  font-size: 0.75rem;
+  color: #5cb85c;
+  white-space: nowrap;
+  background: rgba(92, 184, 92, 0.1);
+  padding: 2px 8px;
+  border-radius: 20px;
+}
+
+.pkgNotes {
+  padding: 16px 24px 20px;
+  border-top: 1px solid var(--color-border);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background: #141414;
+}
+
+.pkgNoteName {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--color-yellow);
+  display: block;
+  margin-bottom: 2px;
+}
+
+.pkgNoteDesc {
+  font-size: 0.78rem;
+  color: var(--color-text-muted);
+  line-height: 1.6;
+  white-space: pre-line;
+}
+
+/* ===== Lightbox ===== */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.92);
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  cursor: zoom-out;
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.lightboxImg {
+  max-width: 100%;
+  max-height: 90vh;
+  object-fit: contain;
+  cursor: default;
+  box-shadow: 0 0 80px rgba(0,0,0,0.8);
+}
+
+.lightboxClose {
+  position: absolute;
+  top: 20px;
+  right: 24px;
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.2);
+  color: #fff;
+  font-size: 1.2rem;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background var(--transition);
+  z-index: 201;
+}
+
+.lightboxClose:hover {
+  background: var(--color-yellow);
+  color: #000;
+  border-color: var(--color-yellow);
+}
+
+/* ===== Go To Top ===== */
+.goTop {
+  position: fixed;
+  bottom: 32px;
+  right: 28px;
+  width: 44px;
+  height: 44px;
+  background: var(--color-yellow);
+  color: #000;
+  border: none;
+  font-size: 1.5rem;
+  font-weight: 900;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transform: translateY(12px);
+  pointer-events: none;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  z-index: 90;
+}
+
+.goTopVisible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.goTop:hover {
+  background: var(--color-yellow-dark);
+}
+
 /* ===== Mobile ===== */
 @media (max-width: 768px) {
   .swiperArrow {
@@ -375,4 +598,10 @@
     padding: 14px 16px;
     font-size: 0.85rem;
   }
+
+  .combo {
+    grid-template-columns: 24px 1fr auto;
+  }
+
+  .comboSave { display: none; }
 }

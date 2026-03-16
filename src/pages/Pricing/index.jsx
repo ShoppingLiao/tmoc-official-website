@@ -1,19 +1,45 @@
-import { useState, useRef } from 'react';
-import { SERVICE_CATEGORIES } from '../../constants/pricing';
+import { useState, useRef, useEffect } from 'react';
+import { PACKAGES, SERVICE_CATEGORIES } from '../../constants/pricing';
 import pkgPower   from '../../assets/images/package-power.png';
 import pkgMicro   from '../../assets/images/package-micro.png';
 import pkgChassis from '../../assets/images/package-chassis.png';
 import styles from './Pricing.module.css';
 
-const PACKAGE_IMAGES = [
-  { src: pkgPower,   alt: '動力覺醒套餐' },
-  { src: pkgMicro,   alt: '微動力升級方案' },
-  { src: pkgChassis, alt: '控骨力套餐' },
+const PKG_DATA = [
+  { ...PACKAGES[0], src: pkgPower },
+  { ...PACKAGES[1], src: pkgMicro },
+  { ...PACKAGES[2], src: pkgChassis },
 ];
 
-// ── 圖片 Swiper ───────────────────────────────────────
+// ── Lightbox ──────────────────────────────────────────
+function Lightbox({ src, alt, onClose }) {
+  useEffect(() => {
+    const onKey = (e) => { if (e.key === 'Escape') onClose(); };
+    document.addEventListener('keydown', onKey);
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.removeEventListener('keydown', onKey);
+      document.body.style.overflow = '';
+    };
+  }, [onClose]);
+
+  return (
+    <div className={styles.lightbox} onClick={onClose}>
+      <button className={styles.lightboxClose} onClick={onClose} aria-label="關閉">&#x2715;</button>
+      <img
+        src={src}
+        alt={alt}
+        className={styles.lightboxImg}
+        onClick={(e) => e.stopPropagation()}
+      />
+    </div>
+  );
+}
+
+// ── Package Swiper ────────────────────────────────────
 function PackageSwiper() {
-  const [current, setCurrent] = useState(0);
+  const [current, setCurrent]     = useState(0);
+  const [lightbox, setLightbox]   = useState(null);
   const trackRef = useRef(null);
 
   const goTo = (index) => {
@@ -23,51 +49,100 @@ function PackageSwiper() {
     });
   };
 
-  const prev = () => goTo((current - 1 + PACKAGE_IMAGES.length) % PACKAGE_IMAGES.length);
-  const next = () => goTo((current + 1) % PACKAGE_IMAGES.length);
+  const prev = () => goTo((current - 1 + PKG_DATA.length) % PKG_DATA.length);
+  const next = () => goTo((current + 1) % PKG_DATA.length);
+
+  const pkg = PKG_DATA[current];
 
   return (
-    <div className={styles.swiper}>
-      {/* 圖片軌道 */}
-      <div className={styles.swiperTrack} ref={trackRef}>
-        {PACKAGE_IMAGES.map((img, i) => (
-          <div key={i} className={styles.swiperSlide}>
-            <img src={img.src} alt={img.alt} className={styles.swiperImg} />
+    <>
+      {lightbox && (
+        <Lightbox src={lightbox.src} alt={lightbox.alt} onClose={() => setLightbox(null)} />
+      )}
+
+      <div className={styles.swiper}>
+        <div className={styles.swiperTrack} ref={trackRef}>
+          {PKG_DATA.map((item, i) => (
+            <div key={i} className={styles.swiperSlide}>
+              <img
+                src={item.src}
+                alt={item.title}
+                className={styles.swiperImg}
+                onClick={() => setLightbox({ src: item.src, alt: item.title })}
+                title="點擊放大"
+              />
+            </div>
+          ))}
+        </div>
+
+        <button className={`${styles.swiperArrow} ${styles.swiperPrev}`} onClick={prev} aria-label="上一張">&#8249;</button>
+        <button className={`${styles.swiperArrow} ${styles.swiperNext}`} onClick={next} aria-label="下一張">&#8250;</button>
+
+        <div className={styles.swiperDots}>
+          {PKG_DATA.map((_, i) => (
+            <button
+              key={i}
+              className={`${styles.dot} ${i === current ? styles.dotActive : ''}`}
+              onClick={() => goTo(i)}
+              aria-label={`第 ${i + 1} 張`}
+            />
+          ))}
+        </div>
+      </div>
+
+      {/* 文字說明（跟著 current 變動） */}
+      <div className={styles.pkgDetail}>
+        <div className={styles.pkgDetailHeader}>
+          {pkg.subtitle && <p className={styles.pkgSubtitle}>{pkg.subtitle}</p>}
+          <h3 className={styles.pkgTitle}>{pkg.title}</h3>
+        </div>
+
+        {/* 單品清單 */}
+        <ul className={styles.pkgItems}>
+          {pkg.items.map(item => (
+            <li key={item.no} className={styles.pkgItem}>
+              <span className={styles.pkgItemNo}>{item.no}.</span>
+              <span className={styles.pkgItemName}>{item.name}</span>
+              <span className={styles.pkgItemPrice}>$ {item.price.toLocaleString()}</span>
+            </li>
+          ))}
+        </ul>
+
+        <div className={styles.pkgDivider} />
+
+        {/* 組合價 */}
+        <div className={styles.combos}>
+          {pkg.combos.map(combo => (
+            <div key={combo.label} className={styles.combo}>
+              <span className={styles.comboLabel}>{combo.label}</span>
+              <span className={styles.comboDesc}>{combo.desc}</span>
+              <span className={styles.comboPrice}>${combo.price.toLocaleString()}</span>
+              <span className={styles.comboSave}>現省 {combo.save.toLocaleString()}</span>
+            </div>
+          ))}
+        </div>
+
+        {/* 備註 */}
+        {pkg.notes.length > 0 && (
+          <div className={styles.pkgNotes}>
+            {pkg.notes.map(note => (
+              <div key={note.name} className={styles.pkgNote}>
+                <span className={styles.pkgNoteName}>{note.name}</span>
+                <p className={styles.pkgNoteDesc}>{note.desc}</p>
+              </div>
+            ))}
           </div>
-        ))}
+        )}
       </div>
-
-      {/* 左右箭頭 */}
-      <button className={`${styles.swiperArrow} ${styles.swiperPrev}`} onClick={prev} aria-label="上一張">
-        &#8249;
-      </button>
-      <button className={`${styles.swiperArrow} ${styles.swiperNext}`} onClick={next} aria-label="下一張">
-        &#8250;
-      </button>
-
-      {/* 指示點 */}
-      <div className={styles.swiperDots}>
-        {PACKAGE_IMAGES.map((_, i) => (
-          <button
-            key={i}
-            className={`${styles.dot} ${i === current ? styles.dotActive : ''}`}
-            onClick={() => goTo(i)}
-            aria-label={`第 ${i + 1} 張`}
-          />
-        ))}
-      </div>
-    </div>
+    </>
   );
 }
 
-// ── 服務分類表格 ──────────────────────────────────────
+// ── ServiceTable ──────────────────────────────────────
 function ServiceTable({ category }) {
   return (
     <div className={styles.serviceCard} id={category.id}>
-      <h3 className={styles.serviceTitle}>
-        {category.title}
-      </h3>
-      {/* 包一層 scrollable wrapper 讓手機可以左右滑 */}
+      <h3 className={styles.serviceTitle}>{category.title}</h3>
       <div className={styles.tableWrapper}>
         <table className={styles.table}>
           <thead>
@@ -92,13 +167,33 @@ function ServiceTable({ category }) {
   );
 }
 
-// ── 頁面主體 ──────────────────────────────────────────
+// ── Go To Top ─────────────────────────────────────────
+function GoToTop() {
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setVisible(window.scrollY > 400);
+    window.addEventListener('scroll', onScroll);
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
+  return (
+    <button
+      className={`${styles.goTop} ${visible ? styles.goTopVisible : ''}`}
+      onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+      aria-label="回到頂部"
+    >
+      &#8679;
+    </button>
+  );
+}
+
+// ── Page ──────────────────────────────────────────────
 export default function Pricing() {
   const [activeTab, setActiveTab] = useState('all');
 
   return (
     <div className={styles.page}>
-      {/* Page Hero */}
       <div className={styles.pageHero}>
         <div className={styles.heroNoise} />
         <div className={styles.heroContent}>
@@ -108,7 +203,6 @@ export default function Pricing() {
         </div>
       </div>
 
-      {/* Tab 切換 */}
       <div className={styles.tabs}>
         <div className={styles.tabContainer}>
           <button
@@ -127,13 +221,12 @@ export default function Pricing() {
       </div>
 
       <div className={styles.content}>
-        {/* ── 完整項目表 ── */}
         {activeTab === 'all' && (
           <div className={styles.container}>
             <div className={styles.catNav}>
               {SERVICE_CATEGORIES.map(cat => (
                 <a key={cat.id} href={`#${cat.id}`} className={styles.catNavItem}>
-                  {cat.icon} {cat.title}
+                  {cat.title}
                 </a>
               ))}
             </div>
@@ -148,7 +241,6 @@ export default function Pricing() {
           </div>
         )}
 
-        {/* ── 優惠套餐 ── */}
         {activeTab === 'packages' && (
           <div className={styles.pkgSection}>
             <p className={styles.pkgNote}>
@@ -159,20 +251,16 @@ export default function Pricing() {
         )}
       </div>
 
-      {/* 底部聯絡 CTA */}
       <div className={styles.cta}>
         <div className={styles.ctaInner}>
           <p className={styles.ctaTitle}>想了解更多或預約施工？</p>
-          <a
-            href="https://lin.ee/t5Agxe2"
-            target="_blank"
-            rel="noreferrer"
-            className={styles.ctaBtn}
-          >
+          <a href="https://lin.ee/t5Agxe2" target="_blank" rel="noreferrer" className={styles.ctaBtn}>
             加入官方 LINE 詢問
           </a>
         </div>
       </div>
+
+      <GoToTop />
     </div>
   );
 }
