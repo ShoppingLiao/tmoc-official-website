@@ -1,4 +1,4 @@
-/* ===== Page Hero ===== */
+/* ===== Page ===== */
 .page {
   min-height: 100vh;
   padding-top: 66px;
@@ -21,10 +21,7 @@
   pointer-events: none;
 }
 
-.heroContent {
-  position: relative;
-  z-index: 1;
-}
+.heroContent { position: relative; z-index: 1; }
 
 .heroLabel {
   display: block;
@@ -107,161 +104,107 @@
   letter-spacing: 0.03em;
 }
 
-/* ===== Package Cards ===== */
-.pkgGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
-  gap: 28px;
+/* ===== Package Swiper ===== */
+.pkgSection {
+  padding: 0 var(--container-padding);
+  max-width: 900px;
+  margin: 0 auto;
 }
 
-.pkgCard {
-  background: var(--color-bg-card);
-  border: 1px solid var(--color-border);
-  border-top: 3px solid var(--color-yellow);
-  overflow: hidden;
-  transition: transform var(--transition), box-shadow var(--transition);
-}
-
-.pkgCard:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 16px 48px rgba(0,0,0,0.5);
-}
-
-.pkgHeader {
-  padding: 20px 24px 16px;
-  background: #161616;
-}
-
-.pkgSubtitle {
-  font-size: 0.72rem;
-  letter-spacing: 0.2em;
-  color: var(--color-yellow);
-  margin-bottom: 4px;
-}
-
-.pkgTitle {
-  font-family: var(--font-heading);
-  font-size: 1.4rem;
-  font-weight: 900;
-  color: var(--color-text);
-  letter-spacing: 0.02em;
-}
-
-/* 單品清單 */
-.pkgItems {
-  padding: 20px 24px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.pkgItem {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 0.9rem;
-}
-
-.pkgItemNo {
-  color: var(--color-yellow);
-  font-weight: 700;
-  min-width: 20px;
-}
-
-.pkgItemName {
-  flex: 1;
-  color: var(--color-text-muted);
-}
-
-.pkgItemPrice {
-  color: var(--color-text);
-  font-weight: 500;
-  font-variant-numeric: tabular-nums;
-  white-space: nowrap;
-}
-
-.pkgDivider {
-  height: 1px;
-  background: var(--color-border);
-  margin: 0 24px;
-}
-
-/* 套餐組合 */
-.combos {
-  padding: 16px 24px 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.combo {
-  display: grid;
-  grid-template-columns: 24px 1fr auto auto;
-  gap: 10px;
-  align-items: center;
-  padding: 8px 12px;
-  background: #161616;
-  border-radius: var(--radius);
-  transition: background var(--transition);
-}
-
-.combo:hover {
-  background: #1e1e1e;
-}
-
-.comboLabel {
-  font-family: var(--font-heading);
-  font-size: 1rem;
-  font-weight: 900;
-  color: var(--color-yellow);
-}
-
-.comboDesc {
+.pkgNote {
   font-size: 0.85rem;
   color: var(--color-text-muted);
+  margin-bottom: var(--spacing-md);
+  padding-left: 12px;
+  border-left: 3px solid var(--color-yellow);
+  letter-spacing: 0.03em;
 }
 
-.comboPrice {
-  font-size: 1rem;
-  font-weight: 700;
-  color: var(--color-text);
-  white-space: nowrap;
+.swiper {
+  position: relative;
+  width: 100%;
+  user-select: none;
 }
 
-.comboSave {
-  font-size: 0.75rem;
-  color: #5cb85c;
-  white-space: nowrap;
-  background: rgba(92, 184, 92, 0.1);
-  padding: 2px 8px;
-  border-radius: 20px;
-}
-
-/* 備註 */
-.pkgNotes {
-  padding: 16px 24px 20px;
-  border-top: 1px solid var(--color-border);
+.swiperTrack {
   display: flex;
-  flex-direction: column;
-  gap: 10px;
-  background: #141414;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  gap: 0;
+  /* 隱藏捲軸 */
+  scrollbar-width: none;
+}
+.swiperTrack::-webkit-scrollbar { display: none; }
+
+.swiperSlide {
+  flex: 0 0 100%;
+  scroll-snap-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
 }
 
-.pkgNote {}
-
-.pkgNoteName {
-  font-size: 0.78rem;
-  font-weight: 700;
-  color: var(--color-yellow);
+.swiperImg {
+  width: 100%;
+  max-width: 800px;
+  height: auto;
   display: block;
-  margin-bottom: 2px;
+  border: 1px solid var(--color-border);
 }
 
-.pkgNoteDesc {
-  font-size: 0.78rem;
-  color: var(--color-text-muted);
-  line-height: 1.6;
-  white-space: pre-line;
+/* 左右箭頭 */
+.swiperArrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0, 0, 0, 0.6);
+  border: 1px solid var(--color-border);
+  color: var(--color-text);
+  font-size: 2.5rem;
+  line-height: 1;
+  width: 48px;
+  height: 64px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background var(--transition), color var(--transition);
+  z-index: 10;
+}
+
+.swiperArrow:hover {
+  background: var(--color-yellow);
+  color: #000;
+  border-color: var(--color-yellow);
+}
+
+.swiperPrev { left: 0; }
+.swiperNext { right: 0; }
+
+/* 指示點 */
+.swiperDots {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--color-border);
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: background var(--transition), transform var(--transition);
+}
+
+.dotActive {
+  background: var(--color-yellow);
+  transform: scale(1.4);
 }
 
 /* ===== Category Nav ===== */
@@ -318,8 +261,15 @@
 
 .serviceIcon { font-size: 1rem; }
 
+/* 讓 table 可以在手機橫向捲動 */
+.tableWrapper {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
 .table {
   width: 100%;
+  min-width: 480px; /* 強制表格有最小寬度，才會觸發橫向捲動 */
   border-collapse: collapse;
   font-size: 0.88rem;
 }
@@ -336,6 +286,7 @@
   color: var(--color-text-muted);
   font-weight: 600;
   border-bottom: 1px solid var(--color-border);
+  white-space: nowrap;
 }
 
 .table tbody tr {
@@ -355,6 +306,7 @@
 
 .table td:first-child {
   color: var(--color-text);
+  white-space: nowrap;
 }
 
 .priceCell {
@@ -366,7 +318,8 @@
 
 .noteCell {
   font-size: 0.78rem;
-  color: #666 !important;
+  color: #888 !important;
+  min-width: 120px;
 }
 
 /* ===== Bottom CTA ===== */
@@ -408,26 +361,18 @@
   transform: translateY(-2px);
 }
 
-/* ===== Responsive ===== */
+/* ===== Mobile ===== */
 @media (max-width: 768px) {
-  .pkgGrid {
-    grid-template-columns: 1fr;
+  .swiperArrow {
+    width: 36px;
+    height: 48px;
+    font-size: 2rem;
   }
 
-  .combo {
-    grid-template-columns: 24px 1fr auto;
-  }
+  .catNav { gap: 6px; }
 
-  .comboSave {
-    display: none;
-  }
-
-  .table th:last-child,
-  .table td:last-child {
-    display: none;
-  }
-
-  .catNav {
-    gap: 6px;
+  .tab {
+    padding: 14px 16px;
+    font-size: 0.85rem;
   }
 }

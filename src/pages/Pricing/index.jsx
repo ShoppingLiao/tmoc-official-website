@@ -1,58 +1,61 @@
-import { useState } from 'react';
-import { PACKAGES, SERVICE_CATEGORIES } from '../../constants/pricing';
+import { useState, useRef } from 'react';
+import { SERVICE_CATEGORIES } from '../../constants/pricing';
+import pkgPower   from '../../assets/images/package-power.png';
+import pkgMicro   from '../../assets/images/package-micro.png';
+import pkgChassis from '../../assets/images/package-chassis.png';
 import styles from './Pricing.module.css';
 
-// ── 套餐卡片 ──────────────────────────────────────────
-function PackageCard({ pkg }) {
+const PACKAGE_IMAGES = [
+  { src: pkgPower,   alt: '動力覺醒套餐' },
+  { src: pkgMicro,   alt: '微動力升級方案' },
+  { src: pkgChassis, alt: '控骨力套餐' },
+];
+
+// ── 圖片 Swiper ───────────────────────────────────────
+function PackageSwiper() {
+  const [current, setCurrent] = useState(0);
+  const trackRef = useRef(null);
+
+  const goTo = (index) => {
+    setCurrent(index);
+    trackRef.current?.children[index]?.scrollIntoView({
+      behavior: 'smooth', block: 'nearest', inline: 'center',
+    });
+  };
+
+  const prev = () => goTo((current - 1 + PACKAGE_IMAGES.length) % PACKAGE_IMAGES.length);
+  const next = () => goTo((current + 1) % PACKAGE_IMAGES.length);
+
   return (
-    <div className={styles.pkgCard}>
-      <div className={styles.pkgHeader}>
-        {pkg.subtitle && <p className={styles.pkgSubtitle}>{pkg.subtitle}</p>}
-        <h3 className={styles.pkgTitle}>{pkg.title}</h3>
-      </div>
-
-      {/* 單品清單 */}
-      <ul className={styles.pkgItems}>
-        {pkg.items.map(item => (
-          <li key={item.no} className={styles.pkgItem}>
-            <span className={styles.pkgItemNo}>{item.no}.</span>
-            <span className={styles.pkgItemName}>{item.name}</span>
-            <span className={styles.pkgItemPrice}>
-              $ {item.price.toLocaleString()}
-            </span>
-          </li>
-        ))}
-      </ul>
-
-      <div className={styles.pkgDivider} />
-
-      {/* 套餐組合 */}
-      <div className={styles.combos}>
-        {pkg.combos.map(combo => (
-          <div key={combo.label} className={styles.combo}>
-            <span className={styles.comboLabel}>{combo.label}</span>
-            <span className={styles.comboDesc}>{combo.desc}</span>
-            <span className={styles.comboPrice}>
-              ${combo.price.toLocaleString()}
-            </span>
-            <span className={styles.comboSave}>
-              現省 {combo.save.toLocaleString()}
-            </span>
+    <div className={styles.swiper}>
+      {/* 圖片軌道 */}
+      <div className={styles.swiperTrack} ref={trackRef}>
+        {PACKAGE_IMAGES.map((img, i) => (
+          <div key={i} className={styles.swiperSlide}>
+            <img src={img.src} alt={img.alt} className={styles.swiperImg} />
           </div>
         ))}
       </div>
 
-      {/* 說明 */}
-      {pkg.notes.length > 0 && (
-        <div className={styles.pkgNotes}>
-          {pkg.notes.map(note => (
-            <div key={note.name} className={styles.pkgNote}>
-              <span className={styles.pkgNoteName}>{note.name}</span>
-              <p className={styles.pkgNoteDesc}>{note.desc}</p>
-            </div>
-          ))}
-        </div>
-      )}
+      {/* 左右箭頭 */}
+      <button className={`${styles.swiperArrow} ${styles.swiperPrev}`} onClick={prev} aria-label="上一張">
+        &#8249;
+      </button>
+      <button className={`${styles.swiperArrow} ${styles.swiperNext}`} onClick={next} aria-label="下一張">
+        &#8250;
+      </button>
+
+      {/* 指示點 */}
+      <div className={styles.swiperDots}>
+        {PACKAGE_IMAGES.map((_, i) => (
+          <button
+            key={i}
+            className={`${styles.dot} ${i === current ? styles.dotActive : ''}`}
+            onClick={() => goTo(i)}
+            aria-label={`第 ${i + 1} 張`}
+          />
+        ))}
+      </div>
     </div>
   );
 }
@@ -65,31 +68,34 @@ function ServiceTable({ category }) {
         <span className={styles.serviceIcon}>{category.icon}</span>
         {category.title}
       </h3>
-      <table className={styles.table}>
-        <thead>
-          <tr>
-            <th>項目</th>
-            <th>價格（NTD）</th>
-            <th>備註</th>
-          </tr>
-        </thead>
-        <tbody>
-          {category.items.map((item, i) => (
-            <tr key={i}>
-              <td>{item.name}</td>
-              <td className={styles.priceCell}>{item.price}</td>
-              <td className={styles.noteCell}>{item.note || '—'}</td>
+      {/* 包一層 scrollable wrapper 讓手機可以左右滑 */}
+      <div className={styles.tableWrapper}>
+        <table className={styles.table}>
+          <thead>
+            <tr>
+              <th>項目</th>
+              <th>價格（NTD）</th>
+              <th>備註</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {category.items.map((item, i) => (
+              <tr key={i}>
+                <td>{item.name}</td>
+                <td className={styles.priceCell}>{item.price}</td>
+                <td className={styles.noteCell}>{item.note || '—'}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }
 
 // ── 頁面主體 ──────────────────────────────────────────
 export default function Pricing() {
-  const [activeTab, setActiveTab] = useState('packages');
+  const [activeTab, setActiveTab] = useState('all');
 
   return (
     <div className={styles.page}>
@@ -107,39 +113,24 @@ export default function Pricing() {
       <div className={styles.tabs}>
         <div className={styles.tabContainer}>
           <button
-            className={`${styles.tab} ${activeTab === 'packages' ? styles.tabActive : ''}`}
-            onClick={() => setActiveTab('packages')}
-          >
-            ⚡ 優惠套餐
-          </button>
-          <button
             className={`${styles.tab} ${activeTab === 'all' ? styles.tabActive : ''}`}
             onClick={() => setActiveTab('all')}
           >
             📋 完整項目表
           </button>
+          <button
+            className={`${styles.tab} ${activeTab === 'packages' ? styles.tabActive : ''}`}
+            onClick={() => setActiveTab('packages')}
+          >
+            ⚡ 優惠套餐
+          </button>
         </div>
       </div>
 
       <div className={styles.content}>
-        {/* ── 套餐頁 ── */}
-        {activeTab === 'packages' && (
-          <div className={styles.container}>
-            <p className={styles.sectionNote}>
-              以下套餐為組合優惠價，可依需求選擇單品或搭配組合。
-            </p>
-            <div className={styles.pkgGrid}>
-              {PACKAGES.map(pkg => (
-                <PackageCard key={pkg.id} pkg={pkg} />
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* ── 完整項目表頁 ── */}
+        {/* ── 完整項目表 ── */}
         {activeTab === 'all' && (
           <div className={styles.container}>
-            {/* 快速跳轉 */}
             <div className={styles.catNav}>
               {SERVICE_CATEGORIES.map(cat => (
                 <a key={cat.id} href={`#${cat.id}`} className={styles.catNavItem}>
@@ -147,16 +138,24 @@ export default function Pricing() {
                 </a>
               ))}
             </div>
-
             <p className={styles.sectionNote}>
               所有價格以實際施作為準，客製化需求請透過官方 LINE 詢價。
             </p>
-
             <div className={styles.serviceList}>
               {SERVICE_CATEGORIES.map(cat => (
                 <ServiceTable key={cat.id} category={cat} />
               ))}
             </div>
+          </div>
+        )}
+
+        {/* ── 優惠套餐 ── */}
+        {activeTab === 'packages' && (
+          <div className={styles.pkgSection}>
+            <p className={styles.pkgNote}>
+              以下套餐為組合優惠價，可依需求選擇單品或搭配組合。
+            </p>
+            <PackageSwiper />
           </div>
         )}
       </div>
