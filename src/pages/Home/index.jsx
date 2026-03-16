@@ -111,11 +111,9 @@ function Contact() {
             </p>
             <div className={styles.contactItems}>
               <div className={styles.contactItem}>
-                <span className={styles.contactIcon}>📍</span>
                 <span>台中市沙鹿區鎮南路一段 233 號</span>
               </div>
               <div className={styles.contactItem}>
-                <span className={styles.contactIcon}>💬</span>
                 <a href="https://lin.ee/t5Agxe2" target="_blank" rel="noreferrer" className={styles.contactLink}>
                   官方 LINE：lin.ee/t5Agxe2
                 </a>

@@ -11,7 +11,7 @@ export default function Footer() {
           <div>
             <p className={styles.brandName}>TMOC 鐵皮車庫</p>
             <p className={styles.brandSub}>Taiwan Metal Owners Club</p>
-            <p className={styles.address}>📍 台中市沙鹿區鎮南路一段 233 號</p>
+            <p className={styles.address}>台中市沙鹿區鎮南路一段 233 號</p>
           </div>
         </div>
 

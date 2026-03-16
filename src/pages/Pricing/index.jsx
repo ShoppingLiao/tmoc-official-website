@@ -65,7 +65,6 @@ function ServiceTable({ category }) {
   return (
     <div className={styles.serviceCard} id={category.id}>
       <h3 className={styles.serviceTitle}>
-        <span className={styles.serviceIcon}>{category.icon}</span>
         {category.title}
       </h3>
       {/* 包一層 scrollable wrapper 讓手機可以左右滑 */}
@@ -116,13 +115,13 @@ export default function Pricing() {
             className={`${styles.tab} ${activeTab === 'all' ? styles.tabActive : ''}`}
             onClick={() => setActiveTab('all')}
           >
-            📋 完整項目表
+            完整項目表
           </button>
           <button
             className={`${styles.tab} ${activeTab === 'packages' ? styles.tabActive : ''}`}
             onClick={() => setActiveTab('packages')}
           >
-            ⚡ 優惠套餐
+            優惠套餐
           </button>
         </div>
       </div>

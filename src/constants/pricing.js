@@ -68,7 +68,7 @@ export const SERVICE_CATEGORIES = [
   {
     id: 'bumper',
     title: '防撞桿／重力盤',
-    icon: '🛡️',
+    icon: '',
     items: [
       { name: '大維（前後）',           price: '28,000' },
       { name: '金剛（前後）',           price: '26,500' },
@@ -85,7 +85,7 @@ export const SERVICE_CATEGORIES = [
   {
     id: 'chassis',
     title: '底盤系列',
-    icon: '⚙️',
+    icon: '',
     items: [
       { name: 'J&J 避震器',               price: '28,000' },
       { name: '黃金升級版 J&J 避震器',    price: '32,000' },
@@ -103,7 +103,7 @@ export const SERVICE_CATEGORIES = [
   {
     id: 'power',
     title: '動力系列',
-    icon: '⚡',
+    icon: '',
     items: [
       { name: '優化精靈',     price: '3,980' },
       { name: '變速箱晶片',   price: '13,500' },
@@ -115,7 +115,7 @@ export const SERVICE_CATEGORIES = [
   {
     id: 'intake',
     title: '進氣系列',
-    icon: '🌬️',
+    icon: '',
     items: [
       { name: '進氣肥腸',     price: '2,850' },
       { name: '加大蝴蝶閥',   price: '14,500' },
@@ -126,7 +126,7 @@ export const SERVICE_CATEGORIES = [
   {
     id: 'brake',
     title: '制動系列',
-    icon: '🔴',
+    icon: '',
     items: [
       { name: '來令',                price: '2,700' },
       { name: '金屬油管',            price: '5,000' },
@@ -139,7 +139,7 @@ export const SERVICE_CATEGORIES = [
   {
     id: 'electric',
     title: '電系相關',
-    icon: '📡',
+    icon: '',
     items: [
       { name: '環景一體機（4+64）',      price: '22,000', note: '12.8寸 8核心' },
       { name: '環景一體機（8+128）',     price: '25,000', note: '12.8寸 8核心' },
@@ -158,7 +158,7 @@ export const SERVICE_CATEGORIES = [
   {
     id: 'insulation',
     title: '隔熱／隔音系列',
-    icon: '🔇',
+    icon: '',
     items: [
       { name: '隔熱紙',                      price: '12,000 up' },
       { name: '後段底盤防鏽漆',              price: '2,500' },
@@ -169,7 +169,7 @@ export const SERVICE_CATEGORIES = [
   {
     id: 'camping',
     title: '露營系列',
-    icon: '⛺',
+    icon: '',
     items: [
       { name: '車頂探照燈',                price: '詢價' },
       { name: '防撞桿探照燈',              price: '詢價' },
@@ -186,7 +186,7 @@ export const SERVICE_CATEGORIES = [
   {
     id: 'bed',
     title: '百變床椅系列',
-    icon: '🛏️',
+    icon: '',
     items: [
       { name: '原廠椅平整墊三片',         price: '500' },
       { name: '鐵皮抱枕被',              price: '500' },
@@ -202,7 +202,7 @@ export const SERVICE_CATEGORIES = [
   {
     id: 'exterior',
     title: '外觀系列',
-    icon: '✨',
+    icon: '',
     items: [
       { name: '前貫穿燈',             price: '5,980' },
       { name: '後貫穿燈',             price: '5,980' },
