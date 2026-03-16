@@ -234,11 +234,12 @@
 }
 
 /* Contact */
-.contactGrid {
+.contactTop {
   display: grid;
   grid-template-columns: 1fr auto;
   gap: var(--spacing-xl);
   align-items: start;
+  margin-bottom: var(--spacing-lg);
 }
 
 .contactDesc {
@@ -256,12 +257,17 @@
 .contactItem {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 16px;
   font-size: 0.9rem;
   color: var(--color-text-muted);
 }
 
-.contactIcon { font-size: 1.1rem; }
+.contactLabel {
+  color: var(--color-yellow);
+  font-weight: 700;
+  min-width: 40px;
+  letter-spacing: 0.05em;
+}
 
 .contactLink {
   color: var(--color-yellow);
@@ -291,10 +297,26 @@
   letter-spacing: 0.05em;
 }
 
+/* Google Maps */
+.mapWrap {
+  width: 100%;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  line-height: 0;
+}
+
+.mapWrap iframe {
+  width: 100%;
+  height: 360px;
+  border: none;
+  display: block;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .aboutGrid,
-  .contactGrid {
+  .contactTop {
     grid-template-columns: 1fr;
   }
 

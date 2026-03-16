@@ -4,11 +4,15 @@ import lineQr from '../../assets/images/line-qrcode.png';
 import styles from './Home.module.css';
 
 function Hero() {
+  const scrollToContact = (e) => {
+    e.preventDefault();
+    document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+  };
+
   return (
     <section id="hero" className={styles.hero}>
       <div className={styles.heroNoise} />
       <div className={styles.heroContent}>
-        <p className={styles.heroEyebrow}>Taiwan Metal Owners Club</p>
         <div className={styles.heroLogoWrap}>
           <img src={logoImg} alt="TMOC Logo" className={styles.heroLogo} />
         </div>
@@ -16,12 +20,10 @@ function Hero() {
         <p className={styles.heroSubtitle}>改裝 · 升級 · 一條龍服務</p>
         <div className={styles.heroCtas}>
           <Link to="/pricing" className={styles.ctaPrimary}>查看服務項目</Link>
-          <a href="#contact" className={styles.ctaSecondary}>聯絡我們</a>
+          <a href="#" onClick={scrollToContact} className={styles.ctaSecondary}>聯絡我們</a>
         </div>
       </div>
-      <div className={styles.heroScroll}>
-        <span />
-      </div>
+      <div className={styles.heroScroll}><span /></div>
     </section>
   );
 }
@@ -67,34 +69,6 @@ function About() {
   );
 }
 
-function Events() {
-  return (
-    <section id="events" className={`${styles.section} ${styles.sectionDark}`}>
-      <div className={styles.container}>
-        <div className={styles.sectionHeader}>
-          <span className={styles.sectionLabel}>EVENTS</span>
-          <h2 className={styles.sectionTitle}>活動紀錄</h2>
-        </div>
-        <p className={styles.placeholder}>活動紀錄內容即將上架，敬請期待。</p>
-      </div>
-    </section>
-  );
-}
-
-function Gallery() {
-  return (
-    <section id="gallery" className={styles.section}>
-      <div className={styles.container}>
-        <div className={styles.sectionHeader}>
-          <span className={styles.sectionLabel}>GALLERY</span>
-          <h2 className={styles.sectionTitle}>作品相簿</h2>
-        </div>
-        <p className={styles.placeholder}>精彩作品照片即將上架，敬請期待。</p>
-      </div>
-    </section>
-  );
-}
-
 function Contact() {
   return (
     <section id="contact" className={`${styles.section} ${styles.sectionDark}`}>
@@ -103,7 +77,8 @@ function Contact() {
           <span className={styles.sectionLabel}>CONTACT</span>
           <h2 className={styles.sectionTitle}>聯絡我們</h2>
         </div>
-        <div className={styles.contactGrid}>
+
+        <div className={styles.contactTop}>
           <div className={styles.contactInfo}>
             <p className={styles.contactDesc}>
               有任何改裝需求或想了解更多服務項目，歡迎透過官方 LINE 聯繫我們，
@@ -111,11 +86,13 @@ function Contact() {
             </p>
             <div className={styles.contactItems}>
               <div className={styles.contactItem}>
+                <span className={styles.contactLabel}>地址</span>
                 <span>台中市沙鹿區鎮南路一段 233 號</span>
               </div>
               <div className={styles.contactItem}>
+                <span className={styles.contactLabel}>LINE</span>
                 <a href="https://lin.ee/t5Agxe2" target="_blank" rel="noreferrer" className={styles.contactLink}>
-                  官方 LINE：lin.ee/t5Agxe2
+                  lin.ee/t5Agxe2
                 </a>
               </div>
             </div>
@@ -124,6 +101,17 @@ function Contact() {
             <img src={lineQr} alt="官方 Line QRCode" />
             <p>掃描加入官方 LINE</p>
           </div>
+        </div>
+
+        {/* Google Maps */}
+        <div className={styles.mapWrap}>
+          <iframe
+            title="鐵皮車庫地圖"
+            src="https://maps.google.com/maps?q=台中市沙鹿區鎮南路一段233號&output=embed&z=16&hl=zh-TW"
+            allowFullScreen
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+          />
         </div>
       </div>
     </section>

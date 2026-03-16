@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { NAV_LINKS } from '../../constants/nav';
 import logoImg from '../../assets/images/logo.webp';
 import styles from './Navbar.module.css';
@@ -8,6 +8,7 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const location = useLocation();
+  const navigate  = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 60);
@@ -19,13 +20,22 @@ export default function Navbar() {
     setMenuOpen(false);
   }, [location]);
 
-  const handleNavClick = (to) => {
+  const scrollToId = (id) => {
+    setTimeout(() => {
+      document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+    }, 100);
+  };
+
+  const handleAnchorClick = (e, to) => {
+    e.preventDefault();
     setMenuOpen(false);
-    if (to.startsWith('/#')) {
-      const id = to.slice(2);
-      setTimeout(() => {
-        document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
-      }, 50);
+    const id = to.replace('/#', '');
+    if (location.pathname !== '/') {
+      navigate('/');
+      // 等 Home 頁面 mount 後再 scroll
+      setTimeout(() => scrollToId(id), 200);
+    } else {
+      scrollToId(id);
     }
   };
 
@@ -48,18 +58,20 @@ export default function Navbar() {
         <ul className={`${styles.navList} ${menuOpen ? styles.navOpen : ''}`}>
           {NAV_LINKS.map(link => (
             <li key={link.to}>
-              {link.to.startsWith('/') && !link.to.startsWith('/#') ? (
+              {link.to.startsWith('/#') ? (
+                <a
+                  href="#"
+                  onClick={(e) => handleAnchorClick(e, link.to)}
+                >
+                  {link.label}
+                </a>
+              ) : (
                 <Link
                   to={link.to}
                   className={location.pathname === link.to ? styles.active : ''}
-                  onClick={() => handleNavClick(link.to)}
                 >
                   {link.label}
                 </Link>
-              ) : (
-                <a href={link.to} onClick={() => handleNavClick(link.to)}>
-                  {link.label}
-                </a>
               )}
             </li>
           ))}
