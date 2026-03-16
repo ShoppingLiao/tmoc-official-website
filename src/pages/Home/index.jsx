@@ -95,6 +95,18 @@ function Contact() {
                   lin.ee/t5Agxe2
                 </a>
               </div>
+              <div className={styles.contactItem}>
+                <span className={styles.contactLabel}>YouTube</span>
+                <a href="https://www.youtube.com/@%E9%90%B5%E7%9A%AE%E8%BB%8A%E5%BA%AB" target="_blank" rel="noreferrer" className={styles.contactLink}>
+                  @鐵皮車庫
+                </a>
+              </div>
+              <div className={styles.contactItem}>
+                <span className={styles.contactLabel}>TikTok</span>
+                <a href="https://www.tiktok.com/@tmoc2209" target="_blank" rel="noreferrer" className={styles.contactLink}>
+                  @tmoc2209
+                </a>
+              </div>
             </div>
           </div>
           <div className={styles.contactQr}>
